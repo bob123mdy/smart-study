@@ -1,0 +1,11 @@
+# 构建上下文排除：只保留源码与锁文件，镜像内全新安装依赖
+node_modules
+.next
+data
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+npm-debug.log*
+*.md

@@ -1,0 +1,13 @@
+# 局域网 HTTPS 反向代理（可选）：解锁完整 PWA —— Service Worker / 离线 / 自动更新 / 安装提示
+# 前置：安装 mkcert 并生成证书（见 deploy/局域网-PWA.md），把 <LAN-IP> 换成电脑局域网 IP。
+#
+#   启动：caddy run --config deploy/Caddyfile
+#   访问：https://<LAN-IP>:8443   （证书文件名由 mkcert 按 <LAN-IP> 生成）
+#
+# 说明：Windows 下普通用户绑定 80/443 需要管理员权限，故示例用 8443。
+#       HTTPS 即 secure context，Service Worker / PWA 完整能力与端口号无关。
+
+https://<LAN-IP>:8443 {
+    tls <LAN-IP>.pem <LAN-IP>-key.pem
+    reverse_proxy localhost:3000
+}

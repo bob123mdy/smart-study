@@ -1,0 +1,53 @@
+{
+  "name": "smart-study",
+  "version": "0.1.0",
+  "private": true,
+  "description": "个人智能学习系统 —— 无 AI 也能完整使用的学习进度/目标/复习系统，AI 为增强层",
+  "scripts": {
+    "dev": "next dev",
+    "predev": "tsx scripts/setup.ts",
+    "build": "next build",
+    "start": "next start",
+    "start:lan": "next start -H 0.0.0.0",
+    "icons": "node scripts/generate-icons.mjs",
+    "db:setup": "tsx scripts/setup.ts",
+    "db:seed": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "1.1.1",
+    "@radix-ui/react-label": "2.1.0",
+    "@radix-ui/react-progress": "1.1.0",
+    "@radix-ui/react-select": "2.1.1",
+    "@radix-ui/react-slot": "1.1.0",
+    "@radix-ui/react-tabs": "1.1.0",
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "12.11.1",
+    "class-variance-authority": "0.7.0",
+    "clsx": "2.1.1",
+    "date-fns": "3.6.0",
+    "drizzle-orm": "0.33.0",
+    "lucide-react": "0.441.0",
+    "mammoth": "^1.12.3",
+    "next": "14.2.15",
+    "pdf-parse": "^2.4.5",
+    "pg": "^8.23.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "swr": "2.2.5",
+    "tailwind-merge": "2.5.2",
+    "ts-fsrs": "^5.4.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "7.6.13",
+    "@types/node": "^22.5.5",
+    "@types/pg": "^8.23.1",
+    "@types/react": "18.3.5",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.41",
+    "sharp": "^0.33.5",
+    "tailwindcss": "3.4.10",
+    "tsx": "^4.19.2",
+    "typescript": "5.5.4"
+  }
+}

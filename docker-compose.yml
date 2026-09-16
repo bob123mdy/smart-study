@@ -1,0 +1,64 @@
+# 个人智能学习系统 · 单机部署编排
+#
+# 用法（默认 SQLite，零配置）：
+#   在项目根目录准备 .env（可参考 .env.example），然后：
+#     docker compose up -d --build
+#   访问 http://localhost:3000 （演示账号 demo@example.com / demo1234）
+#
+# 用法（切换到 PostgreSQL + pgvector）：
+#   1) 在 .env 里设置：
+#        DATABASE_URL=postgres://postgres:postgres@db:5432/smartstudy
+#   2) 启动时带上 pg profile 以拉起数据库服务：
+#        docker compose --profile pg up -d --build
+#   说明：应用按 DATABASE_URL 是否存在自动切换双模式；未设置则始终走 SQLite（数据卷 study-data）。
+
+services:
+  app:
+    build: .
+    image: smart-study:latest
+    container_name: smart-study
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      # 数据库：设置后连 PostgreSQL/pgvector；留空走本地 SQLite（零配置）
+      DATABASE_URL: ${DATABASE_URL:-}
+      # SQLite 文件路径（仅 SQLite 模式生效，固定到卷挂载目录）
+      DATABASE_PATH: /app/data/smart-study.db
+      # ---- AI 增强（可选，留空则核心功能不受影响）----
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+      DEEPSEEK_CHAT_MODEL: ${DEEPSEEK_CHAT_MODEL:-deepseek-chat}
+      DEEPSEEK_REASONER_MODEL: ${DEEPSEEK_REASONER_MODEL:-deepseek-reasoner}
+      EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
+      EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL:-https://api.siliconflow.cn/v1}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-BAAI/bge-large-zh-v1.5}
+    volumes:
+      - study-data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+        required: false
+    restart: unless-stopped
+
+  # PostgreSQL + pgvector（仅当使用 --profile pg 时启动）
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: smart-study-db
+    profiles: ["pg"]
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: smartstudy
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d smartstudy"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+volumes:
+  study-data:
+  pg-data:
