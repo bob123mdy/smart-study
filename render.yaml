@@ -1,0 +1,27 @@
+# Render 一键部署蓝图（Blueprint）
+# 在 Render 控制台「New + → Blueprint」选择本仓库，即可自动创建下面的 Web 服务。
+# 数据库连接串等密钥不写死在这里（sync: false），部署后在 Render 控制台的环境变量里手动填。
+services:
+  - type: web
+    name: smart-study
+    runtime: docker
+    plan: free
+    region: ohio
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: DEEPSEEK_BASE_URL
+        sync: false
+      - key: DEEPSEEK_CHAT_MODEL
+        sync: false
+      - key: DEEPSEEK_REASONER_MODEL
+        sync: false
+      - key: EMBEDDING_API_KEY
+        sync: false
+      - key: EMBEDDING_BASE_URL
+        sync: false
+      - key: EMBEDDING_MODEL
+        sync: false
